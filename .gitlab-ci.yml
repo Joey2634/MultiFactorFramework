@@ -1,0 +1,19 @@
+stages:
+  - test
+
+job1:
+  stage: test
+  tags:
+    - investment-manager
+  only:
+    - /^r-.*$/  #只有release分支才能运行脚本
+#    - schedule  #调试定时任务 所有分支都可运行脚本
+  script:
+    - cd /home/gitlab-runner/ai-investment-manager/
+    - git checkout master
+    - git pull
+    - echo $CI_COMMIT_REF_NAME
+    - git checkout $CI_COMMIT_REF_NAME
+    - git checkout $version
+    - bash dailyTask.sh $PARAM
+
